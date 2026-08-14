@@ -1,0 +1,132 @@
+.builder {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 340px 1fr;
+}
+.builder-panel {
+  padding: var(--space-xl);
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+}
+.builder-panel h1, .preview-panel h2 { margin: 0; }
+.intro, .subtext, .card-header p { color: var(--color-subtext); }
+.intro { line-height: 1.5; }
+.eyebrow {
+  margin: 0 0 var(--space-xs);
+  color: var(--color-subtext);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.builder-section { margin: var(--space-xl) 0; }
+.builder-section h2 { margin: 0 0 var(--space-md); font-size: 1rem; }
+.color-control {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+.color-control label { font-size: .9rem; font-weight: 600; }
+.color-input-wrap { display: flex; align-items: center; gap: var(--space-xs); }
+.color-picker {
+  width: 34px; height: 34px; padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+}
+.hex-input {
+  width: 92px;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+.hex-input.invalid { border-color: var(--color-danger); }
+
+.button {
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  font-weight: 700;
+}
+.button-primary { color: #fff; background: var(--color-primary); }
+.button-secondary { color: var(--color-text); background: var(--color-secondary); }
+.button-danger { color: #fff; background: var(--color-danger); }
+
+.preview-panel { padding: var(--space-xl); }
+.app-preview {
+  min-height: calc(100vh - 110px);
+  margin-top: var(--space-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-background);
+  box-shadow: var(--shadow-md);
+}
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+.preview-header nav { display: flex; gap: var(--space-md); }
+.preview-header a {
+  color: var(--color-subtext);
+  text-decoration: none;
+  font-weight: 600;
+}
+.preview-header a.active { color: var(--color-primary); }
+.preview-content {
+  display: grid;
+  gap: var(--space-lg);
+  max-width: 900px;
+  margin: auto;
+  padding: var(--space-xxl);
+}
+.preview-content h1 { margin: 0 0 var(--space-sm); }
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-lg); }
+
+.card {
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+.card-header, .card-content { padding: var(--space-lg); }
+.card-header { border-bottom: 1px solid var(--color-border); }
+.card-header h3, .card-header p { margin: 0; }
+.card-header p { margin-top: var(--space-xs); }
+.card-content { display: grid; gap: var(--space-sm); }
+
+.input {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+.notice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  padding: var(--space-md);
+  border: 1px solid color-mix(in srgb, var(--color-warning) 45%, var(--color-border));
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-warning) 12%, var(--color-surface));
+}
+
+@media (max-width: 800px) {
+  .builder { grid-template-columns: 1fr; }
+  .builder-panel { border-right: 0; border-bottom: 1px solid var(--color-border); }
+  .preview-header { align-items: flex-start; flex-direction: column; }
+  .preview-content { padding: var(--space-lg); }
+}
