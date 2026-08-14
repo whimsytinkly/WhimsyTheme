@@ -19,6 +19,16 @@
 
       <section class="builder-section">
         <h2>Colours</h2>
+        <div class="image-theme">
+          <label for="theme-image">Generate from image</label>
+          <input id="theme-image" type="file" accept="image/png, image/jpeg, image/webp">
+          <div id="theme-image-error" class="notice notice-warning"  style="display: none;">
+            <strong>⚠ Warning</strong>
+            <span></span>
+          </div>
+          <img id="theme-image-preview" class="theme-image-preview" alt="Uploaded theme source">
+        </div>
+
         <div id="color-controls"></div>
       </section>
 
@@ -97,6 +107,6 @@
 
   <script src="js/css-generator.js"></script>
   <script src="js/theme-builder.js"></script>
-</body>
+  <script src="js/image-theme.js"></script>
 
 </html>

@@ -123,6 +123,7 @@ document.querySelector("#apply-theme").addEventListener("click", () => {
   generateCSS();
 });
 
+// Toggle between preview and CSS view
 document.querySelectorAll(".view-toggle-button").forEach(button => {
   button.addEventListener("click", () => {
     const isPreview = button.dataset.view === "preview";
@@ -139,8 +140,7 @@ document.querySelectorAll(".view-toggle-button").forEach(button => {
   });
 });
 
-
-
+// Copy generated CSS to clipboard
 document.querySelector("#copy-css").addEventListener("click", async () => {
   const css = document.querySelector("#generated-css").textContent;
 
@@ -153,5 +153,3 @@ document.querySelector("#copy-css").addEventListener("click", async () => {
     button.textContent = "Copy";
   }, 1500);
 });
-
-generateCSS();

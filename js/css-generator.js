@@ -1,3 +1,6 @@
+// CSS Generator
+
+// Generates CSS based on the current theme settings
 function generateThemeCSS() {
     let css = ``;
 
@@ -30,6 +33,7 @@ function generateThemeCSS() {
     return css;
 }
 
+// Generates the complete root variables
 function generateRootCSS() {
     return `:root {
 ${generateThemeCSS()}
@@ -52,6 +56,7 @@ ${generateThemeCSS()}
   `;
 }
 
+// Generates CSS for buttons
 function generateButtonCSS() {
     return `
 .button {
@@ -78,6 +83,7 @@ function generateButtonCSS() {
 `;
 }
 
+// Generates CSS for input fields
 function generateInputCSS() {
     return `
 .input {
@@ -92,6 +98,7 @@ function generateInputCSS() {
 `;
 }
 
+// Generates CSS for Cards
 function generateCardCSS() {
     return `
 .card {
@@ -127,6 +134,7 @@ function generateCardCSS() {
 `;
 }
 
+// Generates CSS for Notices
 function generateNoticeCSS() {
     return `
 .notice {
@@ -141,6 +149,7 @@ function generateNoticeCSS() {
 `;
 }
 
+// Generates the complete CSS for the theme
 function generateCSS() {
     css = `${generateRootCSS()}
     ${generateButtonCSS()}
