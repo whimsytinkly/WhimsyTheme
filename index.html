@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,6 +9,7 @@
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/builder.css">
 </head>
+
 <body>
   <main class="builder">
     <aside class="builder-panel">
@@ -24,54 +26,77 @@
     </aside>
 
     <section class="preview-panel">
-      <p class="eyebrow">Live Preview</p>
-      <h2>Your app</h2>
+      <div class="view-toggle">
+        <button class="view-toggle-button active" data-view="preview">
+          Live Preview
+        </button>
+        <button class="view-toggle-button" data-view="css">
+          CSS
+        </button>
+      </div>
 
-      <div class="app-preview">
-        <header class="preview-header">
-          <strong>🐱 My App</strong>
-          <nav>
-            <a class="active" href="#">Home</a>
-            <a href="#">Reports</a>
-            <a href="#">Settings</a>
-          </nav>
-        </header>
+      <div id="preview-view">
+        <h2>Your app</h2>
 
-        <div class="preview-content">
-          <section>
-            <p class="eyebrow">Example application</p>
-            <h1>Build something cute.</h1>
-            <p class="subtext">This preview uses the same theme tokens the generated framework will use.</p>
-            <div class="actions">
-              <button class="button button-primary">Primary</button>
-              <button class="button button-secondary">Secondary</button>
-              <button class="button button-danger">Danger</button>
-            </div>
-          </section>
+        <div class="app-preview">
+          <header class="preview-header">
+            <strong>🐱 My App</strong>
+            <nav>
+              <a class="active" href="#">Home</a>
+              <a href="#">Reports</a>
+              <a href="#">Settings</a>
+            </nav>
+          </header>
 
-          <section class="card">
-            <div class="card-header">
-              <h3>Example Card</h3>
-              <p class="subtext">A sample card using shared theme values.</p>
-            </div>
-            <div class="card-content">
-              <label for="example-input">Name</label>
-              <input id="example-input" class="input" placeholder="Example input">
-              <div class="notice notice-warning">
-                <strong>⚠ Warning</strong>
-                <span>This is an example semantic state.</span>
+          <div class="preview-content">
+            <section>
+              <p class="eyebrow">Example application</p>
+              <h1>Build something cute.</h1>
+              <p class="subtext">This preview uses the same theme tokens the generated framework will use.</p>
+              <div class="actions">
+                <button class="button button-primary">Primary</button>
+                <button class="button button-secondary">Secondary</button>
+                <button class="button button-danger">Danger</button>
               </div>
-              <div class="notice notice-success">
-                <strong>✅ Success</strong>
-                <span>This is an example semantic state.</span>
+            </section>
+
+            <section class="card">
+              <div class="card-header">
+                <h3>Example Card</h3>
+                <p class="subtext">A sample card using shared theme values.</p>
               </div>
-            </div>
-          </section>
+              <div class="card-content">
+                <label for="example-input">Name</label>
+                <input id="example-input" class="input" placeholder="Example input">
+                <div class="notice notice-warning">
+                  <strong>⚠ Warning</strong>
+                  <span>This is an example semantic state.</span>
+                </div>
+                <div class="notice notice-success">
+                  <strong>✅ Success</strong>
+                  <span>This is an example semantic state.</span>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <div id="css-view" class="css-view">
+        <div class="css-code">
+          <div class="css-code-header">
+            <span>CSS</span>
+            <button id="copy-css" class="copy-css-button">Copy</button>
+          </div>
+
+          <pre><code id="generated-css"></code></pre>
         </div>
       </div>
     </section>
   </main>
 
+  <script src="js/css-generator.js"></script>
   <script src="js/theme-builder.js"></script>
 </body>
+
 </html>

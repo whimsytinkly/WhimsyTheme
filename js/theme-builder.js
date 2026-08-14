@@ -1,3 +1,4 @@
+
 const theme = {
   primary: "#7C5CFF",
   secondary: "#E9E4FF",
@@ -91,9 +92,9 @@ function getBrightness(hex) {
 // Function to determine readable text color based on background brightness
 function getReadableText(background) {
   if (getBrightness(background) > 0.7) {
-  return "#000000";
-}
-return "#FFFFFF";
+    return "#000000";
+  }
+  return "#FFFFFF";
 }
 
 document.querySelector("#apply-theme").addEventListener("click", () => {
@@ -119,4 +120,38 @@ document.querySelector("#apply-theme").addEventListener("click", () => {
       );
     }
   }
+  generateCSS();
 });
+
+document.querySelectorAll(".view-toggle-button").forEach(button => {
+  button.addEventListener("click", () => {
+    const isPreview = button.dataset.view === "preview";
+
+    document.querySelector("#preview-view").style.display =
+      isPreview ? "block" : "none";
+
+    document.querySelector("#css-view").style.display =
+      isPreview ? "none" : "block";
+
+    document.querySelectorAll(".view-toggle-button").forEach(btn => {
+      btn.classList.toggle("active", btn === button);
+    });
+  });
+});
+
+
+
+document.querySelector("#copy-css").addEventListener("click", async () => {
+  const css = document.querySelector("#generated-css").textContent;
+
+  await navigator.clipboard.writeText(css);
+
+  const button = document.querySelector("#copy-css");
+  button.textContent = "Copied!";
+
+  setTimeout(() => {
+    button.textContent = "Copy";
+  }, 1500);
+});
+
+generateCSS();
