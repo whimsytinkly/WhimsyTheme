@@ -365,6 +365,7 @@ function applyGeneratedTheme({
         input.value = color.hex ?? color;
         input.dispatchEvent(new Event("input"));
     }
+    applyTheme();
 }
 
 /**

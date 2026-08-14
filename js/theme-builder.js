@@ -97,20 +97,28 @@ function getReadableText(background) {
   return "#FFFFFF";
 }
 
-document.querySelector("#apply-theme").addEventListener("click", () => {
+function applyTheme() {
   for (const key of Object.keys(theme)) {
     const input = [...document.querySelectorAll(".hex-input")]
-      .find(el => el.getAttribute("aria-label") === `${labels[key]} hex value`);
+      .find(
+        el =>
+          el.getAttribute("aria-label") ===
+          `${labels[key]} hex value`
+      );
 
     const value = input.value.trim();
 
     if (!validHex(value)) {
       input.classList.add("invalid");
       input.focus();
-      return;
+      return false;
     }
 
-    document.documentElement.style.setProperty(variables[key], value);
+    document.documentElement.style.setProperty(
+      variables[key],
+      value
+    );
+
     if (["primary", "secondary", "danger"].includes(key)) {
       const textColor = getReadableText(value);
 
@@ -120,7 +128,13 @@ document.querySelector("#apply-theme").addEventListener("click", () => {
       );
     }
   }
+
   generateCSS();
+  return true;
+}
+
+document.querySelector("#apply-theme").addEventListener("click", () => {
+  applyTheme()
 });
 
 // Toggle between preview and CSS view
@@ -159,20 +173,20 @@ document.querySelector("#copy-css").addEventListener("click", async () => {
 const presetSelect = document.querySelector("#theme-preset");
 
 for (const [key, preset] of Object.entries(presets)) {
-    const option = document.createElement("option");
+  const option = document.createElement("option");
 
-    option.value = key;
-    option.textContent = preset.name;
+  option.value = key;
+  option.textContent = preset.name;
 
-    presetSelect.append(option);
+  presetSelect.append(option);
 }
 
 presetSelect.addEventListener("change", () => {
-    const preset = presets[presetSelect.value];
+  const preset = presets[presetSelect.value];
 
-    if (!preset) {
-        return;
-    }
+  if (!preset) {
+    return;
+  }
 
-    applyGeneratedTheme(preset);
+  applyGeneratedTheme(preset);
 });
