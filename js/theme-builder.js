@@ -153,3 +153,26 @@ document.querySelector("#copy-css").addEventListener("click", async () => {
     button.textContent = "Copy";
   }, 1500);
 });
+
+
+// Preset themes
+const presetSelect = document.querySelector("#theme-preset");
+
+for (const [key, preset] of Object.entries(presets)) {
+    const option = document.createElement("option");
+
+    option.value = key;
+    option.textContent = preset.name;
+
+    presetSelect.append(option);
+}
+
+presetSelect.addEventListener("change", () => {
+    const preset = presets[presetSelect.value];
+
+    if (!preset) {
+        return;
+    }
+
+    applyGeneratedTheme(preset);
+});
