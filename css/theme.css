@@ -11,6 +11,10 @@
   --color-border: #ddd9e1;
   --color-focus: var(--color-primary);
 
+  --color-primary-text: #f6f4f1;
+  --color-secondary-text: #25232a;
+  --color-danger-text: #f6f4f1;
+
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;

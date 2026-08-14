@@ -76,6 +76,26 @@ for (const [key, value] of Object.entries(theme)) {
   controls.append(row);
 }
 
+// Function to calculate brightness of a hex color
+function getBrightness(hex) {
+  // Convert hex to RGB
+  const rgb = parseInt(hex.slice(1), 16);
+
+  const r = ((rgb >> 16) & 0xff) / 255;
+  const g = ((rgb >> 8) & 0xff) / 255;
+  const b = (rgb & 0xff) / 255;
+
+  return 0.299 * r + 0.587 * g + 0.114 * b;
+}
+
+// Function to determine readable text color based on background brightness
+function getReadableText(background) {
+  if (getBrightness(background) > 0.7) {
+  return "#000000";
+}
+return "#FFFFFF";
+}
+
 document.querySelector("#apply-theme").addEventListener("click", () => {
   for (const key of Object.keys(theme)) {
     const input = [...document.querySelectorAll(".hex-input")]
@@ -90,5 +110,13 @@ document.querySelector("#apply-theme").addEventListener("click", () => {
     }
 
     document.documentElement.style.setProperty(variables[key], value);
+    if (["primary", "secondary", "danger"].includes(key)) {
+      const textColor = getReadableText(value);
+
+      document.documentElement.style.setProperty(
+        `--color-${key}-text`,
+        textColor
+      );
+    }
   }
 });
