@@ -18,30 +18,43 @@
       <p class="eyebrow">CSS Framework</p>
       <h1>Whimsy Theme</h1>
       <p class="intro">Pick a palette and preview it before generating your theme.</p>
-
       <section class="builder-section">
         <h2>Colours</h2>
-        <div class="preset-theme">
-          <label for="theme-preset">Preset</label>
+        <details open>
+          <summary>Generate from...</summary>
 
-          <select id="theme-preset">
-            <option value="">Choose a theme...</option>
-          </select>
-        </div>
-        <div class="image-theme">
-          <label for="theme-image">Generate from image</label>
-          <input id="theme-image" type="file" accept="image/png, image/jpeg, image/webp">
-          <div id="theme-image-error" class="notice notice-warning" style="display: none;">
-            <strong>⚠ Warning</strong>
-            <span></span>
+          <div class="preset-theme">
+            <label for="theme-preset">Preset</label>
+
+            <select id="theme-preset">
+              <option value="">Choose a theme...</option>
+            </select>
           </div>
-          <img id="theme-image-preview" class="theme-image-preview" alt="Uploaded theme source">
-        </div>
 
-        <div id="color-controls"></div>
+          <div class="image-theme">
+            <label for="theme-image">Generate from image</label>
+
+            <input id="theme-image" type="file" accept="image/png, image/jpeg, image/webp">
+
+            <div id="theme-image-error" class="notice notice-warning" style="display: none;">
+              <strong>⚠ Warning</strong>
+              <span></span>
+            </div>
+
+            <img id="theme-image-preview" class="theme-image-preview" alt="Uploaded theme source" hidden>
+          </div>
+        </details>
+
+        <details open>
+          <summary>Details</summary>
+
+          <div id="color-controls"></div>
+        </details>
       </section>
 
-      <button id="apply-theme" class="button button-primary">Apply Theme</button>
+      <button id="apply-theme" class="button button-primary">
+        Apply Theme
+      </button>
     </aside>
 
     <section class="preview-panel">

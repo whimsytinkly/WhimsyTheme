@@ -244,6 +244,10 @@
   border-radius: var(--radius-md);
 }
 
+.theme-image-preview[hidden] {
+  display: none;
+}
+
 .preset-theme {
     display: grid;
     gap: var(--space-xs);
@@ -263,4 +267,18 @@
     color: var(--color-text);
     background: var(--color-surface);
     font: inherit;
+}
+
+.builder-section details {
+  margin-bottom: var(--space-md);
+}
+
+.builder-section summary {
+  padding: var(--space-sm) 0;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.builder-section details[open] summary {
+  margin-bottom: var(--space-sm);
 }

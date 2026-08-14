@@ -5,6 +5,7 @@ imageInput.addEventListener("change", () => {
     const file = imageInput.files[0];
 
     if (!file) {
+        imagePreview.hidden = true;
         return;
     }
 
@@ -18,7 +19,9 @@ imageInput.addEventListener("change", () => {
         showImageError(
             "Please upload a PNG, JPG, JPEG, or WebP image."
         );
+
         imageInput.value = "";
+        imagePreview.hidden = true;
         return;
     }
 
@@ -494,6 +497,7 @@ function clearImageError() {
 
     error.querySelector("span").textContent = "";
     error.style.display = "none";
+    imagePreview.hidden = true;
 }
 
 clearImageError();
