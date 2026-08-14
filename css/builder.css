@@ -92,7 +92,7 @@
   text-decoration: none;
   font-weight: 600;
 }
-.preview-header a.active { color: var(--color-primary); }
+.preview-header a.active { color: var(--color-text); }
 .preview-content {
   display: grid;
   gap: var(--space-lg);

@@ -152,12 +152,12 @@ function getColorFrequency(pixels) {
 
 // Function to get the background color from the most frequent color
 function getBackground(colorData) {
-    return colorData[0];
+    return normalizeBackground(colorData[0]);
 }
 
 // Function to get the surface color from the second most frequent color
 function getSurface(colorData) {
-    return colorData[1];
+    return normalizeBackground(colorData[1]);
 }
 
 
@@ -367,6 +367,115 @@ function applyGeneratedTheme({
     }
 }
 
+/**
+ * Handling for cursed images
+ */
+
+function normalizeBackground(color) {
+
+    const rgb = parseInt(color.hex.slice(1), 16);
+
+    const r = (rgb >> 16) & 0xff;
+    const g = (rgb >> 8) & 0xff;
+    const b = rgb & 0xff;
+
+    // Convert RGB → HSL
+    const max = Math.max(r, g, b) / 255;
+    const min = Math.min(r, g, b) / 255;
+
+    const lightness = (max + min) / 2;
+
+    let saturation = 0;
+
+    if (max !== min) {
+        const delta = max - min;
+        saturation =
+            delta /
+            (1 - Math.abs(2 * lightness - 1));
+    }
+
+    // Only tone down very highly saturated backgrounds
+    if (saturation < 0.70) {
+        return color;
+    }
+
+    saturation = 0.5;
+
+    // Convert HSL back to RGB
+    const hue = getHue(r / 255, g / 255, b / 255);
+
+    const c = (1 - Math.abs(2 * lightness - 1)) * saturation;
+    const x = c * (1 - Math.abs((hue / 60) % 2 - 1));
+    const m = lightness - c / 2;
+
+    let r1 = 0;
+    let g1 = 0;
+    let b1 = 0;
+
+    if (hue < 60) {
+        r1 = c;
+        g1 = x;
+    } else if (hue < 120) {
+        r1 = x;
+        g1 = c;
+    } else if (hue < 180) {
+        g1 = c;
+        b1 = x;
+    } else if (hue < 240) {
+        g1 = x;
+        b1 = c;
+    } else if (hue < 300) {
+        r1 = x;
+        b1 = c;
+    } else {
+        r1 = c;
+        b1 = x;
+    }
+
+    const newR = Math.round((r1 + m) * 255);
+    const newG = Math.round((g1 + m) * 255);
+    const newB = Math.round((b1 + m) * 255);
+
+    const hex =
+        "#" +
+        [newR, newG, newB]
+            .map(value =>
+                value.toString(16).padStart(2, "0")
+            )
+            .join("")
+            .toUpperCase();
+
+    return {
+        ...color,
+        hex
+    };
+}
+
+function getHue(r, g, b) {
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+
+    if (max === min) {
+        return 0;
+    }
+
+    const delta = max - min;
+    let hue;
+
+    if (max === r) {
+        hue = 60 * (((g - b) / delta) % 6);
+    } else if (max === g) {
+        hue = 60 * ((b - r) / delta + 2);
+    } else {
+        hue = 60 * ((r - g) / delta + 4);
+    }
+
+    if (hue < 0) {
+        hue += 360;
+    }
+
+    return hue;
+}
 
 /**
  * Functions to show and clear image errors
