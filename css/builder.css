@@ -106,6 +106,17 @@
   background: var(--color-danger);
 }
 
+.button:hover {
+  border-color: var(--color-accent);
+  box-shadow:
+    0 0 6px color-mix(in srgb,
+      var(--color-accent) 70%,
+      transparent),
+    0 0 14px color-mix(in srgb,
+      var(--color-accent) 45%,
+      transparent);
+}
+
 a {
   color: var(--color-accent);
   text-decoration: underline;
