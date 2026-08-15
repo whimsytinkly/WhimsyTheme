@@ -84,6 +84,8 @@ imageInput.addEventListener("change", () => {
             surface
         );
 
+        const accent = normalizeAccent(primary, background);
+
         const text = getText(
             colorDataWithLightness,
             background
@@ -96,11 +98,13 @@ imageInput.addEventListener("change", () => {
 
         const border = getBorder(subtext, surface);
 
+
         applyGeneratedTheme({
             background,
             surface,
             primary,
             secondary,
+            accent,
             text,
             subtext,
             border
@@ -364,6 +368,7 @@ function applyGeneratedTheme({
     surface,
     primary,
     secondary,
+    accent,
     text,
     subtext,
     border
@@ -373,6 +378,7 @@ function applyGeneratedTheme({
         surface,
         primary,
         secondary,
+        accent,
         text,
         subtext,
         border
@@ -507,6 +513,66 @@ function getHue(r, g, b) {
     return hue;
 }
 
+function getHueFromHex(hex) {
+    const rgb = parseInt(hex.slice(1), 16);
+
+    const r = ((rgb >> 16) & 0xff) / 255;
+    const g = ((rgb >> 8) & 0xff) / 255;
+    const b = (rgb & 0xff) / 255;
+
+    return getHue(r, g, b);
+}
+
+function hslToHex(hue, saturation, lightness) {
+    const c =
+        (1 - Math.abs(2 * lightness - 1)) *
+        saturation;
+
+    const x =
+        c *
+        (1 - Math.abs((hue / 60) % 2 - 1));
+
+    const m = lightness - c / 2;
+
+    let r = 0;
+    let g = 0;
+    let b = 0;
+
+    if (hue < 60) {
+        r = c;
+        g = x;
+    } else if (hue < 120) {
+        r = x;
+        g = c;
+    } else if (hue < 180) {
+        g = c;
+        b = x;
+    } else if (hue < 240) {
+        g = x;
+        b = c;
+    } else if (hue < 300) {
+        r = x;
+        b = c;
+    } else {
+        r = c;
+        b = x;
+    }
+
+    const newR = Math.round((r + m) * 255);
+    const newG = Math.round((g + m) * 255);
+    const newB = Math.round((b + m) * 255);
+
+    return (
+        "#" +
+        [newR, newG, newB]
+            .map(value =>
+                value.toString(16).padStart(2, "0")
+            )
+            .join("")
+            .toUpperCase()
+    );
+}
+
 // Function to normalize the surface color based on the background color
 function normalizeSurface(background, surface) {
     const backgroundIsLight =
@@ -533,6 +599,45 @@ function normalizeSurface(background, surface) {
         lightness: getLightness(hex)
     };
 }
+
+
+ /**
+  * Functions to normalize the primary color based on saturation and lightness
+  * For accent colors, we want to avoid overly saturated colors that can be harsh on the eyes.
+  */
+ const ACCENT_SATURATION_MAX = 0.6;
+ const ACCENT_LIGHTNESS_SHIFT = 0.15;
+
+ function normalizeAccent(primary, background) {
+     let lightness = getLightness(primary.hex);
+     const saturation = getSaturation(primary.hex);
+
+     // Shift the accent away from the background lightness
+     if (background.lightness >= LIGHTNESS_THRESHOLD) {
+         lightness -= ACCENT_LIGHTNESS_SHIFT;
+     } else {
+         lightness += ACCENT_LIGHTNESS_SHIFT;
+     }
+
+     // Keep lightness within a valid range
+     lightness = Math.max(0, Math.min(1, lightness));
+
+     // Tone down overly saturated colours.
+     const adjustedSaturation =
+         Math.min(saturation, ACCENT_SATURATION_MAX);
+
+     const hex = hslToHex(
+         getHueFromHex(primary.hex),
+         adjustedSaturation,
+         lightness
+     );
+
+     return {
+         ...primary,
+         hex,
+         lightness: getLightness(hex)
+     };
+ }
 
 /**
  * Functions to show and clear image errors

@@ -2,6 +2,7 @@
 const theme = {
   primary: "#7C5CFF",
   secondary: "#E9E4FF",
+  accent: "#7C5CFF",
   danger: "#D9534F",
   success: "#3F9F6B",
   warning: "#D99A2B",
@@ -15,6 +16,7 @@ const theme = {
 const labels = {
   primary: "Primary",
   secondary: "Secondary",
+  accent: "Accent",
   danger: "Danger",
   success: "Success",
   warning: "Warning",
