@@ -1,5 +1,6 @@
 const imageInput = document.querySelector("#theme-image");
 const imagePreview = document.querySelector("#theme-image-preview");
+const LIGHTNESS_THRESHOLD = 0.45;
 
 imageInput.addEventListener("change", () => {
     const file = imageInput.files[0];
@@ -65,7 +66,10 @@ imageInput.addEventListener("change", () => {
             getColorLightness(colorDataWithSaturation);
 
         const background = getBackground(colorDataWithLightness);
-        const surface = getSurface(colorDataWithLightness);
+        let surface = getSurface(colorDataWithLightness);
+
+        // Ensure that the surface color is compatible with the background color
+        surface = normalizeSurface(background, surface);
 
         const primary = getPrimary(
             colorDataWithSaturation,
@@ -203,10 +207,21 @@ function getPrimary(colorData, background, surface) {
             color =>
                 getColorDistance(color.hex, background.hex) >= 60 &&
                 getColorDistance(color.hex, surface.hex) >= 60
-        )
-        .sort((a, b) => b.saturation - a.saturation);
+        );
 
-    return candidates[0] || colorData[0];
+    // Try to avoid saturation of 1, as it is just black :|
+    const nonMaxSaturationCandidates = candidates.filter(
+        color => color.saturation < 1
+    );
+
+    const usableCandidates =
+        nonMaxSaturationCandidates.length > 0
+            ? nonMaxSaturationCandidates
+            : candidates;
+
+    return [...usableCandidates]
+        .sort((a, b) => b.saturation - a.saturation)[0]
+        || colorData[0];
 }
 
 // Function to get the secondary color based on saturation and pixel count, excluding the primary color
@@ -218,10 +233,20 @@ function getSecondary(colorData, primary, background, surface) {
             color =>
                 getColorDistance(color.hex, background.hex) >= 60 &&
                 getColorDistance(color.hex, surface.hex) >= 60
-        )
-        .sort((a, b) => b.saturation - a.saturation);
+        );
 
-    return candidates[0] || primary;
+    const nonMaxSaturationCandidates = candidates.filter(
+        color => color.saturation < 1
+    );
+
+    const usableCandidates =
+        nonMaxSaturationCandidates.length > 0
+            ? nonMaxSaturationCandidates
+            : candidates;
+
+    return [...usableCandidates]
+        .sort((a, b) => b.saturation - a.saturation)[0]
+        || primary;
 }
 
 // Function to calculate the distance between two hex colors
@@ -274,7 +299,7 @@ function getColorLightness(colorData) {
 
 // Function to get the text color based on lightness
 function getText(colorData, background) {
-    if (background.lightness > 0.45) {
+    if (background.lightness > LIGHTNESS_THRESHOLD) {
         return [...colorData]
             .sort((a, b) => a.lightness - b.lightness)[0];
     }
@@ -285,7 +310,7 @@ function getText(colorData, background) {
 
 // Function to get the subtext color based on lightness, excluding the text color
 function getSubText(colorData, background) {
-    if (background.lightness > 0.45) {
+    if (background.lightness > LIGHTNESS_THRESHOLD) {
         return [...colorData]
             .sort((a, b) => a.lightness - b.lightness)[1];
     }
@@ -451,7 +476,8 @@ function normalizeBackground(color) {
 
     return {
         ...color,
-        hex
+        hex,
+        lightness: getLightness(hex)
     };
 }
 
@@ -479,6 +505,33 @@ function getHue(r, g, b) {
     }
 
     return hue;
+}
+
+// Function to normalize the surface color based on the background color
+function normalizeSurface(background, surface) {
+    const backgroundIsLight =
+        background.lightness >= LIGHTNESS_THRESHOLD;
+
+    const surfaceIsLight =
+        surface.lightness >= LIGHTNESS_THRESHOLD;
+
+    // Background and surface are already compatible.
+    if (backgroundIsLight === surfaceIsLight) {
+        return surface;
+    }
+
+    // Move surface 70% toward background.
+    const hex = blendColors(
+        background.hex,
+        surface.hex,
+        0.6
+    );
+
+    return {
+        ...surface,
+        hex,
+        lightness: getLightness(hex)
+    };
 }
 
 /**
