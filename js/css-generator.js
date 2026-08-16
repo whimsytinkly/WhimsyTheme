@@ -83,6 +83,56 @@ function generateButtonCSS() {
 `;
 }
 
+// Generates CSS for links
+function generateLinkCSS() {
+    return `
+a {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.preview-header a {
+  font-weight: 600;
+  text-underline-offset: 3px;
+}
+`;
+}
+
+// Generates CSS for button states
+function generateButtonStateCSS() {
+    return `
+.button {
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.button:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 12px color-mix(
+    in srgb,
+    var(--color-accent) 85%,
+    transparent
+  );
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+`;
+}
+
 // Generates CSS for input fields
 function generateInputCSS() {
     return `
@@ -153,6 +203,8 @@ function generateNoticeCSS() {
 function generateCSS() {
     css = `${generateRootCSS()}
     ${generateButtonCSS()}
+    ${generateButtonStateCSS()}
+    ${generateLinkCSS()}
     ${generateInputCSS()}
     ${generateCardCSS()}
     ${generateNoticeCSS()}
